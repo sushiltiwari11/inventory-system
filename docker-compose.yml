@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:15-alpine # Using a slim/lightweight base image
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Named volume for persistence
+
+  # Python Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: python_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      # Automatically constructs the connection string using the variables
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      - db
+
+  # React Frontend Service# React Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    restart: always
+    ports:
+      - "3000:5173"  # <--- CHANGED THIS LINE
+    environment:
+      VITE_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+
+# Define the named volume
+volumes:
+  postgres_data:
