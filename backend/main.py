@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from auth import get_password_hash, verify_password, create_access_token, get_current_user
 
 # 1. Create the database tables
-models.Base.metadata.drop_all(bind=engine)
+
 models.Base.metadata.create_all(bind=engine)
 
 # 2. Initialize app EXACTLY ONCE
