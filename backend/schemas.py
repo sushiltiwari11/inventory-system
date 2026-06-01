@@ -2,6 +2,17 @@
 from pydantic import BaseModel, EmailStr, Field
 from typing import List
 from datetime import datetime
+from pydantic import BaseModel
+
+
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 # --- Products ---
 class ProductBase(BaseModel):
