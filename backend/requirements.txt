@@ -4,6 +4,7 @@ sqlalchemy
 psycopg2-binary
 pydantic
 email-validator
-passlib[bcrypt]
+passlib
+bcrypt==3.2.2
 pyjwt
 python-multipart
